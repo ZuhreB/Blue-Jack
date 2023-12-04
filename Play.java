@@ -19,5 +19,8 @@ System.out.println("gamer 2 cards");
 d1.showCardPlayer2();
 System.out.println();
 d1.gameCard();
+System.out.println();
+d1.giveBoard(d1.cards_player_board);
+d1.giveBoard(d1.cards_computer_board);
 }
 }
