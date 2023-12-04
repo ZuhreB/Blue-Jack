@@ -11,6 +11,8 @@ private int [] value2 = {1,2,3,4,5,6};
 private String [] feature = {"flip","double","normal"};
 private boolean sign= true;//mean it is positive 
 Cards cards_player [] = new Cards[5];
+Cards cards_computer_board [] = new Cards [9];
+Cards cards_player_board [] = new Cards [9];
 
 public Deck(int [] value2){
     this.value2=value2;
@@ -89,11 +91,13 @@ public void delivery(Cards [] user, Cards [] computer){
 	int k=39;
 	while(cards[i]!=null&&c.empty_index<5){
 		c.player_cards[c.empty_index]=cards[i];
+		cards[i]=null;
 		i++;
 		c.empty_index++;
 	}
     while(cards[k]!=null&&p.empty_index<5){
 		p.player_cards[p.empty_index]=cards[k];
+		cards[k]= null;
 	    p.empty_index++;
 	    k--;
 	}
@@ -101,6 +105,9 @@ public void delivery(Cards [] user, Cards [] computer){
 
 public void showCard(){
 	for(int i=0;i<cards.length;i++){
+		if(cards[i]==null){
+			continue;
+		}
 		System.out.println(cards[i]);
 	}
 }
@@ -138,6 +145,23 @@ public void showCardPlayer2(){
 	for(int i=0;i<c.player_cards.length;i++){
 		System.out.println(c.player_cards[i]);
 	}
+}
+
+public void giveBoard(Cards [] cards_player_board){
+	int index=0;
+for(int i=0;i<cards.length;i++){
+if(cards[i]==null){
+continue;
+}else{		
+cards_player_board [index+1]=cards[i];
+cards[i]= null;
+index++;
+if(index==1){
+	break;
+}
+}
+}
+System.out.println(cards_player_board [index]+" in the board");
 }
 
 }
