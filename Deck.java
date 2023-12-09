@@ -1,6 +1,8 @@
 import java.util.Random;
+import java.util.Scanner;
 public class Deck {
 	Random rd = new Random();
+	Scanner sc = new Scanner(System.in);
 private  String [] color = {"blue", "yellow" , "red" , "green" };
 private int [] value = { 1,2,3,4,5,6,7,8,9,10};
 Cards [] cards = new Cards[40];
@@ -162,6 +164,54 @@ if(index==1){
 }
 }
 System.out.println(cards_player_board [index]+" in the board");
+}
+
+public void check(Cards[] cards_player_board){
+	int sum_points=0;
+	int caunter=0;
+	for(int i=0;i<cards_player_board.length;i++){
+		sum_points+=cards_computer_board[i].getValue();
+	}
+	for(int i=0;i<cards_player_board.length;i++){
+		if(cards_player_board[i].getColor().equals("blue")){
+			caunter++;
+		}
+	}
+	if(caunter>=4){
+		System.out.println("u win u use all blue cards");
+	}
+	if(sum_points==20){
+		System.out.println("u win");
+	}
+}
+public void play(){
+	
+	giveBoard(cards_player_board);
+	int index_move=0;
+	System.out.println("do u wanna move your special card 1: yes 2: no");
+	boolean play = false;
+	int scan = sc.nextInt();
+	if(scan==1){
+		play= true;
+	}
+	while(play==true){
+	System.out.println("which cards dou u wanna move 1st 2nd 3rd 4td ");
+	int move=sc.nextInt();
+	if(p.game_cards[move-1]!=null){
+	cards_player_board[index_move]=p.game_cards[move-1];
+	index_move++;
+	p.game_cards[move-1]=null;
+	play=false;
+
+	}
+	else{
+		System.out.println("please enter a diifferent one ");
+		move=sc.nextInt();
+	}
+}
+}
+public void play_computer(){
+	giveBoard(cards_computer_board);
 }
 
 }
