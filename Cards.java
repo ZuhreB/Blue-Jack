@@ -5,9 +5,10 @@ private int value ;
 private String name;
 private boolean sign;
 
-public Cards(String color , int value){
+public Cards(String color , int value ){
     this.color=color;
     this.value=value;
+	this.sign=true;
     this.name=this.color+" "+ this.value;
 }
 public Cards(int value, String feature , String color,boolean sign){
@@ -31,6 +32,9 @@ public  String getColor(){
 public String getFeature(){
 	return feature;
 }
+public boolean getSign(){
+	return sign;
+}
 public void setValue(int value){
 	this.value=value;
 }
@@ -40,7 +44,10 @@ public void setColor(String color){
 public void setFeature(String feature){
 	this.feature=feature;
 }
-public String toString() { 
+public void setSign(boolean sign){
+	this.sign=sign;
+}
+public String toString() { // ı write toString to access features
 	return  name;
 
 }
