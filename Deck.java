@@ -13,8 +13,6 @@ private int [] value2 = {1,2,3,4,5,6};
 private String [] feature = {"flip","double","normal"};
 private boolean sign= true;//mean it is positive 
 Cards cards_player [] = new Cards[5];
-Cards cards_computer_board [] = new Cards [9];
-Cards cards_player_board [] = new Cards [9];
 
 public Deck(int [] value2){
     this.value2=value2;
@@ -105,7 +103,7 @@ public void delivery(Cards [] user, Cards [] computer){
 	}
 }
 
-public void showCard(){
+public void showCard(Cards [] cards){
 	for(int i=0;i<cards.length;i++){
 		if(cards[i]==null){
 			continue;
@@ -137,81 +135,132 @@ public void gameCard(){
 	
 }
 
-public void showCardPlayer1(){
-	for(int i=0;i<p.player_cards.length;i++){
-		System.out.println(p.player_cards[i]);
-	}
-}
-
-public void showCardPlayer2(){
-	for(int i=0;i<c.player_cards.length;i++){
-		System.out.println(c.player_cards[i]);
-	}
-}
-
-public void giveBoard(Cards [] cards_player_board){
-	int index=0;
+public void giveBoard(Player player){
+	boolean move_b=true;
 for(int i=0;i<cards.length;i++){
 if(cards[i]==null){
 continue;
 }else{		
-cards_player_board [index+1]=cards[i];
+player.board_cards[player.board_card_index++]=cards[i];
 cards[i]= null;
-index++;
-if(index==1){
-	break;
+break;
 }
 }
-}
-System.out.println(cards_player_board [index]+" in the board");
+System.out.println(player.board_cards[player.board_card_index-1]+" in the board");
 }
 
-public void check(Cards[] cards_player_board){
+public void check(Player player){
 	int sum_points=0;
-	int caunter=0;
-	for(int i=0;i<cards_player_board.length;i++){
-		sum_points+=cards_computer_board[i].getValue();
-	}
-	for(int i=0;i<cards_player_board.length;i++){
-		if(cards_player_board[i].getColor().equals("blue")){
-			caunter++;
-		}
-	}
-	if(caunter>=4){
-		System.out.println("u win u use all blue cards");
-	}
-	if(sum_points==20){
+	int counter=0;
+	for(int i=0;i<player.board_cards.length;i++){
+		if(player.board_cards[i]==null){
+			continue;
+		}else{
+			if(player.board_cards[i].getSign()==true){
+				sum_points+=player.board_cards[i].getValue();
+			}else{
+		sum_points-=player.board_cards[i].getValue();
+			}
+		if(sum_points==20){
 		System.out.println("u win");
 	}
+	    if(sum_points>20){
+		System.out.println("u are a bust");
+	}
+			}
+	}
+	System.out.println(sum_points+" point in the board");
+   for (int i = 0; i < player.board_cards.length; i++) {
+      if (player.board_cards[i] != null && player.board_cards[i].getColor() != null) {
+        if (player.board_cards[i].getColor().equals("blue")) {
+            counter++;
+        }
+    }
+		if(counter>=4){
+		System.out.println("u win u use all blue cards");
+	}	
 }
+}
+
 public void play(){
-	
-	giveBoard(cards_player_board);
+	giveBoard(p);
 	int index_move=0;
 	System.out.println("do u wanna move your special card 1: yes 2: no");
-	boolean play = false;
 	int scan = sc.nextInt();
 	if(scan==1){
-		play= true;
+		p.play= true;
 	}
-	while(play==true){
+	else if (scan==2){
+		p.play= false;
+	}
+	while(p.play==true){
 	System.out.println("which cards dou u wanna move 1st 2nd 3rd 4td ");
 	int move=sc.nextInt();
 	if(p.game_cards[move-1]!=null){
-	cards_player_board[index_move]=p.game_cards[move-1];
-	index_move++;
+	p.board_cards[p.board_card_index]=p.game_cards[move-1];
+	p.board_card_index++;
 	p.game_cards[move-1]=null;
-	play=false;
-
+	p.play=false;
 	}
 	else{
 		System.out.println("please enter a diifferent one ");
 		move=sc.nextInt();
 	}
+	 check(p);
 }
+System.out.println("elindeki kartlar");
+showCard(p.game_cards);
+System.out.println();
+System.out.println("masadaki kartlar");
+showCard(p.board_cards);
+
 }
+
 public void play_computer(){
-	giveBoard(cards_computer_board);
+	giveBoard(c);
+	int board_sum=0;
+	int rnd=0;
+	for(int i=0;i<c.board_cards.length;i++){
+		if(c.board_cards[i]!=null){
+		board_sum+=c.board_cards[i].getValue();
+		}
+	}
+	for(int i=0;i<c.game_cards.length;i++){
+		if(c.game_cards[i]!=null){
+		if(c.game_cards[i].getValue()+board_sum==20){
+			c.board_cards[c.board_card_index]=c.game_cards[i];
+			c.board_card_index++;
+			c.game_cards[i]=null;
+			break;
+		}
+		}
+		else if(c.game_cards[i].getValue()+board_sum<20){
+		rnd=rd.nextInt(2);
+		if(rnd==1){
+			rnd=rd.nextInt(4);//game card length
+			if(c.game_cards[rnd]==null){
+				rnd=rd.nextInt(4);
+				}
+			while(c.game_cards[rnd]!=null){
+				c.board_cards[c.board_card_index]=c.game_cards[rnd];
+				c.board_card_index++;
+			    c.game_cards[i]=null;
+				break;
+			}
+		}else{
+			System.out.println("computer wan to stand");
+			break;
+		}
+	}
+}
+check(c);
+System.out.println();
+System.out.println("elindeki kartlar");
+showCard(c.game_cards);
+System.out.println();
+System.out.println("masadaki kartlar");
+showCard(c.board_cards);
+
 }
 
 }
