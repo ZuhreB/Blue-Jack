@@ -1,14 +1,16 @@
+import java.util.Random;
 public class Cards {
 private String feature;
 private String color ;
 private int value ;
 private String name;
 private boolean sign;
-
+Random rd= new Random();
 public Cards(String color , int value ){
     this.color=color;
     this.value=value;
 	this.sign=true;
+	this.feature="normal";
     this.name=this.color+" "+ this.value;
 }
 public Cards(int value, String feature , String color,boolean sign){
@@ -20,7 +22,17 @@ public Cards(int value, String feature , String color,boolean sign){
 }
 public Cards(String feature){
 	this.feature=feature;
-	this.name =this.feature;
+	if(feature.equals("flip")){
+		int rndm=rd.nextInt(2);
+		if(rndm==1){
+		this.sign=true;
+	}else{
+		this.sign=false;
+	}
+	this.name =this.feature+" "+this.sign;
+}else{
+	this.name=this.feature;
+}
 }
 
 public int getValue(){
