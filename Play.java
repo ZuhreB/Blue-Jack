@@ -29,16 +29,11 @@ r.gameCard(p);
 System.out.println();
 r.gameCard(c);
 System.out.println();
-int caunter=0;
-for(int i=0;i<d1.cards.length;i++){
-if(d1.cards[i]==null){
-	caunter++;
-}
-}
+int caunter =0;
 while(caunter<=40){
 	r.giveBoard(p,d1.cards);
-	p.play(p);
 	System.out.println();
+	p.play(p);
 	System.out.println("computer playyyyyyyyyyyyyyy");
 	r.giveBoard(c,d1.cards);
 	c.playComputer(c);
@@ -46,7 +41,6 @@ while(caunter<=40){
 	if(c.score>=20||p.score>=20){
 			break;
 		}
-		
 }
 
 
