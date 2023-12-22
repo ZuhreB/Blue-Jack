@@ -29,55 +29,78 @@ public class Player{
    public void play(Player p){
 	   int scan;
 	   int mover;
-	   System.out.println("Do you want to play?");
-	   scan=sc.nextInt();
-	   if(scan==1){
+	   String rd;
+	   r.check(p);
+	   System.out.println("Stand or continue? choose s or c");
+	   rd=sc.nextLine();
+	   if(rd.equals("s")){
+		  System.out.println(p.getName()+" want to stand"); 
+		  p.play=false;
+		
+	   }else if(rd.equals("c")){
+		   System.out.println(p.getName()+" want to continue"); 
 		   p.play=true;
-		   System.out.println("Which card do u want to move?");
-		   mover=sc.nextInt();
-		   if(p.game_cards[mover-1]!=null){
-			   p.board_cards[p.board_card_index]=p.game_cards[mover-1];
-			   p.board_card_index++;
-			   p.game_cards[mover-1]= null;
-		   }else if(p.game_cards[mover-1]==null){
-			System.out.println("please choose another one");   
+		 
+	   }   
+	   while(p.play==true&&rd.equals("c")) {
+		   System.out.println("Do you want to play? 1: yes 2:no ");
+		   scan=sc.nextInt();
+		   if(scan==1){
+			   System.out.println("Which card do u want to move?");
+			   mover=sc.nextInt();
+			    if(p.game_cards[mover-1]==null){
+					  System.out.println("please choose another one");  
+					  mover=sc.nextInt();
+					  }
+			   while(game_cards[mover-1]!=null){
+				   if(p.game_cards[mover-1]!=null){
+					   p.board_cards[p.board_card_index]=p.game_cards[mover-1];
+					   p.board_card_index++;
+					   p.game_cards[mover-1]= null;
+					   break;
+				  }
+			   }
 		   }
-	   }
-r.check(p);
-System.out.println();	 
-System.out.println(p.getName()+"'s elindeki kartlar");
-r.showCard(p.game_cards);
-System.out.println();
-System.out.println("masadaki kartlar");
-r.showCard(p.board_cards);
-
-
+		  else{
+			  break;
+			  }
+			  if(rd.equals("s")){
+				  p.play=false;
+			}
+			if(p.play==false){
+				break;
+				}
+	}
+	r.check(p);
+	System.out.println();	 
+    System.out.println(p.getName()+"'s elindeki kartlar");
+	r.showCard(p.game_cards);
+	System.out.println();
+	System.out.println("masadaki kartlar");
+	r.showCard(p.board_cards);
 }
 
   public void playComputer(Player c){
 	int board_sum=0;
 	int rnd=0;
+	rnd=rd.nextInt(4);
+	r.check(c);
 	for(int i=0;i<c.board_cards.length;i++){
 		if(c.board_cards[i]==null){
 			continue;
 		}else if(c.board_cards[i]!=null){
 		board_sum+=c.board_cards[i].getValue();
-		break;
 		}
-	}
+	}//bilgisayarın tahtasındaki kartların değerini topladı
 	for(int i=0;i<c.game_cards.length;i++){
 		 if(c.game_cards[i]==null){
 			continue;
-		}
-		else if(c.score>17){
-			System.out.println("computer wan to stand");
+		}if(c.score>=17){
+			System.out.println(c.getName()+" want to stand"); 
 			c.play=false;
 			break;
 		}
-		if(c.play=false){
-			break;
-		}else if(c.game_cards[i].getValue()+c.score==20){
-			
+		else if(c.game_cards[i].getValue()+c.score==20){
 			c.board_cards[c.board_card_index]=c.game_cards[i];
 			c.board_card_index++;
 			c.game_cards[i]=null;
@@ -105,6 +128,8 @@ r.showCard(p.board_cards);
 			        break;
 			}
 		
+		}else if(c.game_cards[i].getFeature().equals("double")&&c.game_cards[i].getFeature().equals("flip")&&c.game_cards[rnd].getValue()==0){
+			rnd=rd.nextInt(4);
 		}else if(c.game_cards[rnd].getValue()+c.score>=20){
 			System.out.println("computer do not move any card");
 			break;
