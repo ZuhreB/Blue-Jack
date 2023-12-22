@@ -1,5 +1,8 @@
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Formatter;
+import java.io.IOException;
+import java.nio.file.Paths;
 public class Ruler{
 	Random rd = new Random();
 	Scanner sc = new Scanner(System.in);
@@ -72,34 +75,20 @@ public class Ruler{
 					}
 					
 	public void giveBoard(Player player,Cards [] cards){
-		String rd=null;
-		System.out.println("Stand or continue? choose s or c");
-		if(player.getName().equals("computer")){
-			if(player.play==false){
-				rd="s";
-				System.out.println("computer want to stand");
-			}else{
-				rd="c";
+		for(int i=0;i<cards.length;i++){
+			if(cards[i]!=null&&player.play==true){	
+			player.board_cards[player.board_card_index]=cards[i];
+			player.board_card_index++;
+			cards[i]= null;
+			break;
 			}
-		}else {
-		rd=sc.nextLine();
-		if(rd.equals("s")){
-			player.play=false;
-		}
-		}
-	  for(int i=0;i<cards.length;i++){
-		  if(cards[i]!=null&&player.play==true){	
-		  player.board_cards[player.board_card_index]=cards[i];
-		  player.board_card_index++;
-		  cards[i]= null;
-		  break;
-		  }
-		  if(player.score>=17){
-			  break;
-		  }
-	}
-	System.out.println(player.board_cards[player.board_card_index-1]+" in the board");
-	}
+			if(player.getName().equals("computer")){
+				if(player.score>=17){
+				player.play=false;
+				}
+			}		}
+		System.out.println(player.board_cards[player.board_card_index-1]+" in the board");
+				}
 
     public void check(Player player){
 		int score_n=0;
@@ -165,9 +154,33 @@ public class Ruler{
 			}
 		}
 		}
-		System.out.println("user's score "+user.top_score);
-		System.out.println("computer's score "+c.top_score);
-		
+		Formatter f = null;
+		Scanner reader = null;
+		try {
+			f = new Formatter("ScoreFile.txt");
+			f.format("%s: %s",user.getName() +":"+user.top_score ," computer :"+c.top_score );
+			} catch (Exception e) {
+				System.err.println("Something went wrong.");
+				} finally {
+					if (f != null) {
+						f.close();
+						}
+					}
+					
+		try {
+			reader = new Scanner (Paths.get("ScoreFile.txt"));
+			while(reader.hasNextLine ()) {
+				System.out.println(reader.nextLine ());
+				}
+				} catch (IOException e) {
+					e. printStackTrace ();
+					} finally {
+						if (reader != null) {
+							reader.close();
+							}
+						}
+
+
 		
 	}
 }
