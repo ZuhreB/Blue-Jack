@@ -64,7 +64,7 @@ public class Player{
 				   if(p.game_cards[mover-1]!=null){
 					   p.board_cards[p.board_card_index]=p.game_cards[mover-1];
 					   p.board_card_index++;
-					   System.out.println(p.game_cards[mover-1]+"played ");
+					   System.out.println(p.game_cards[mover-1]+" played ");
 					   p.game_cards[mover-1]= null;
 					   read=1;
 					   break;
@@ -77,9 +77,7 @@ public class Player{
 			  if(read==1){
 				  p.play=false;
 			  }
-			  if(p.play==false){
-				break;
-				}
+			  
 	}
 	
 	r.check(p);
