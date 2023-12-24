@@ -7,7 +7,8 @@ public class Ruler{
 	Random rd = new Random();
 	Scanner sc = new Scanner(System.in);
     Deck d1 = new Deck();
-
+    
+	boolean control_top_score=false;
 
     public  void shuffle (Cards [] cards){
 	Cards temp;
@@ -92,73 +93,86 @@ public class Ruler{
 
     public void check(Player player){
 		int score_n=0;
-	int counter=0;
-	for(int i=0;i<player.board_cards.length;i++){
-		if(player.board_cards[i]==null){
-			continue;
-		}
-		if(player.board_cards[player.board_card_index-1].getFeature()==null){
-			continue;
-		}else if (player.board_cards[player.board_card_index-1].getFeature().equals("flip")){
-           if(player.board_cards[player.board_card_index-1].getSign()==false){
-              player.board_cards[player.board_card_index-2].setValue(player.board_cards[player.board_card_index-2].getValue()*-1);
-           }else{
-              player.board_cards[player.board_card_index-2].setValue(player.board_cards[player.board_card_index-2].getValue()*1);
-           }
-		}else if (player.board_cards[player.board_card_index-1].getFeature().equals("double")){
-              player.board_cards[player.board_card_index-2].setValue(player.board_cards[player.board_card_index-2].getValue()*2);
-		}
-		if(player.board_cards[i].getFeature().equals("flip")||player.board_cards[i].getFeature().equals("double")){
-				   continue;
-			   }
-		   else if(player.board_cards[i].getSign()==true){
+		int counter=0;
+		control_top_score=false;
+		for(int i=0;i<player.board_cards.length;i++){
+			if(player.board_cards[i]==null){
+				continue;
+			}
+			if(player.board_cards[player.board_card_index-1].getFeature()==null){
+				continue;
+				}else if (player.board_cards[player.board_card_index-1].getFeature().equals("flip")){
+						player.board_cards[player.board_card_index-2].setValue(player.board_cards[player.board_card_index-2].getValue()*-1);
+		        }else if (player.board_cards[player.board_card_index-1].getFeature().equals("double")){
+					player.board_cards[player.board_card_index-2].setValue(player.board_cards[player.board_card_index-2].getValue()*2);
+					}
+			if(player.board_cards[i].getFeature().equals("flip")||player.board_cards[i].getFeature().equals("double")){
+				continue;
+			}else if(player.board_cards[i].getSign()==true){
 				score_n+=player.board_cards[i].getValue();
 			}else{
-		score_n-=player.board_cards[i].getValue();
+				score_n-=player.board_cards[i].getValue();
 			}
 		}
-		if(score_n==20){
-		System.out.println( player.getName()+" win");
-		player.score++;
-	}
-	    if(score_n>20){
-		System.out.println( player.getName()+" are  bust");
-	}
-	System.out.println(score_n+" point in the board");
-   for (int i = 0; i < player.board_cards.length; i++) {
-      if (player.board_cards[i] != null && player.board_cards[i].getColor() != null) {
-        if (player.board_cards[i].getColor().equals("blue")) {
-            counter++;
-        }
-    }
-   }
-		if(counter>=4){
-		System.out.println(player.getName()+" win u use all blue cards");
-	}	
-	player.score=score_n;
-}
+			if(score_n==20){
+				System.out.println(player.getName()+" win");
+				for(int i=0;i<player.board_cards.length;i++){
+					if(player.board_cards[i]!=null){
+						if(player.board_cards[i].getColor().equals("blue")){
+						player.top_score++;
+						control_top_score=true;
+						System.out.println("BLUJACK !!!!");
+				        }
+					}
+				}
+				player.score++;
+				}
+			if(score_n>20){
+				System.out.println( player.getName()+" are  bust");
+				}	
+			System.out.println(score_n+" point in the board");
+			player.score=score_n;
+				
+		}
 
     public void calculate_score(Player user , Player c){
+		control_top_score=false;
 		if(user.score==20){
 			user.top_score++;
+			control_top_score=true;
 		}if(c.score==20){
 			c.top_score++;
+			control_top_score=true;
 		}if(user.score==20&&c.score==20){
 			System.out.println("scoreless");	
+			control_top_score=true;
+		}if(user.score>20){
+			if(c.score<20){
+				c.top_score++;
+				control_top_score=true;
+			}
+		}if(c.score>20){
+			if(user.score<20){
+				user.top_score++;
+				control_top_score=true;
+			}
 		}if(user.board_card_index==8||c.board_card_index==8){
 			if(user.score<20&&c.score<20){
 			if(user.score>c.score){
 				user.top_score++;
+				control_top_score=true;
 			}else{
 				c.top_score++;
+				control_top_score=true;
 			}
 		}
 		}
+		
 		Formatter f = null;
 		Scanner reader = null;
 		try {
 			f = new Formatter("ScoreFile.txt");
-			f.format("%s: %s",user.getName() +":"+user.top_score ," computer :"+c.top_score );
+			f.format("%s: %s",user.getName() +user.top_score ," computer :"+c.top_score );
 			} catch (Exception e) {
 				System.err.println("Something went wrong.");
 				} finally {
@@ -183,4 +197,5 @@ public class Ruler{
 
 		
 	}
+	
 }
