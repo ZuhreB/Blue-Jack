@@ -4,6 +4,7 @@ private String feature;
 private String color ;
 private int value ;
 private String name;
+private int index;
 private boolean sign;
 Random rd= new Random();
 public Cards(String color , int value ){
@@ -42,6 +43,7 @@ public String getFeature(){
 public boolean getSign(){
 	return sign;
 }
+
 public void setValue(int value){
 	this.value=value;
 }
@@ -54,6 +56,8 @@ public void setFeature(String feature){
 public void setSign(boolean sign){
 	this.sign=sign;
 }
+
+
 public String toString() { // ı write toString to access features
 	return  name;
 
