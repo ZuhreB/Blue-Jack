@@ -22,18 +22,13 @@ public Cards(int value, String feature , String color,boolean sign){
 }
 public Cards(String feature){
 	this.feature=feature;
+	this.color="not";
 	if(feature.equals("flip")){
-		int rndm=rd.nextInt(2);
-		if(rndm==1){
-		this.sign=true;
-	}else{
-		this.sign=false;
+		this.sign=false;//because all time turn the the other card sign 
 	}
-	this.name =this.feature+" "+this.sign;
-}else{
-	this.name=this.feature;
+	this.name =this.feature;
 }
-}
+
 
 public int getValue(){
 	return value;
